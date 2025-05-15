@@ -1,0 +1,156 @@
+
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+    tools:context=".profile.ProfileFragment">
+
+
+
+    <ImageButton
+        android:id="@+id/settings"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="fitCenter"
+        android:layout_gravity="top|right"
+        android:src="@drawable/settings"
+        android:tint="@color/grey"
+        android:background="@color/black"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="32dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:id="@+id/userprofile"
+                android:src="@drawable/defualtprofile"/>
+
+            <Space
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/sora"
+                    android:textSize="24dp"
+                    android:id="@+id/username"
+                    android:textColor="@color/white"
+                    android:text="USERNAME"/>
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="email"
+                    android:textColor="@color/lightgrey"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+
+                    android:fontFamily="@font/sora"/>
+
+                <TextView
+                    android:id="@+id/role"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="role"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/sora"/>
+
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="8dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:id="@+id/xfollowers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sora"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:text="x"/>
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sora"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:text="followers"/>
+
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/xorders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sora"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:text="x"/>
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/sora"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:text="orders"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"/>
+        <Button
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:text="edit profile"
+            android:backgroundTint="@color/grey"
+            android:textColor="@color/white"
+            android:fontFamily="@font/sora"/>
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="96dp"
+        />
+
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My"
+        android:layout_marginRight="32dp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/lalezar"
+        android:textSize="64dp"
+        />
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Barber"
+        android:fontFamily="@font/lalezar"
+        android:textColor="@color/white"
+        android:layout_marginTop="-48dp"
+        android:textSize="64dp"
+        />
+
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Where Style Meets Convenience"
+        android:textColor="@color/lightgrey"
+        android:fontFamily="@font/sora"
+        />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="196dp"/>
+
+    <Button
+        android:id="@+id/loginbtn"
+        android:layout_gravity="center"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/grey"
+        />
+
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        />
+
+
+    <Button
+        android:id="@+id/signupbtn"
+        android:layout_gravity="center"
+        android:layout_width="256dp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:text="Sign up"
+        android:textSize="16dp"
+        android:backgroundTint="@color/grey"
+        android:textColor="@color/white"
+        />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
