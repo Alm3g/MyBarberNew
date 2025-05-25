@@ -69,12 +69,26 @@
         android:textAlignment="center"
         android:fontFamily="@font/sora"
         android:textColor="@color/grey"
+        android:inputType="textPassword"
         android:padding="8dp"
         android:layout_height="wrap_content"/>
 
     <Space
         android:layout_width="wrap_content"
         android:layout_height="48dp"/>
+
+    <TextView
+        android:id="@+id/forgotPasswordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Forgot Password?"
+        android:textColor="@color/blue"
+        android:fontFamily="@font/sora"
+        android:textStyle="bold"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/loginbtn"

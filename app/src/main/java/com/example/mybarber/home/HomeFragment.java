@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             db.collection("users").document(uid).get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
-                            Boolean isBarberValue = task.getResult().getBoolean("IsBarber");
+                            Boolean isBarberValue = task.getResult().getBoolean("isBarber");
                             isBarber = isBarberValue != null && isBarberValue;
 
                             // Show/hide add post button based on user type

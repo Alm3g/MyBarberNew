@@ -7,12 +7,11 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     android:orientation="vertical"
-    tools:context=".Login">
+    tools:context=".SignUp">
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        />
+        android:layout_height="16dp" />
 
     <TextView
         android:layout_gravity="center"
@@ -22,8 +21,7 @@
         android:layout_marginRight="32dp"
         android:textColor="@color/white"
         android:fontFamily="@font/lalezar"
-        android:textSize="64dp"
-        />
+        android:textSize="48dp" />
 
     <TextView
         android:layout_gravity="center"
@@ -32,13 +30,44 @@
         android:text="Barber"
         android:fontFamily="@font/lalezar"
         android:textColor="@color/white"
-        android:layout_marginTop="-48dp"
-        android:textSize="64dp"
-        />
+        android:layout_marginTop="-32dp"
+        android:textSize="48dp" />
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="64dp"/>
+        android:layout_height="24dp"/>
+
+    <!-- Profile Image Section -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/darkrounded"
+            android:src="@drawable/defualtprofile"
+            android:scaleType="centerCrop"
+            android:padding="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Tap to add photo"
+            android:textColor="@color/lightgrey"
+            android:fontFamily="@font/sora"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"/>
 
     <EditText
         android:id="@+id/displayname"
@@ -56,7 +85,7 @@
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="16dp"/>
+        android:layout_height="12dp"/>
 
     <EditText
         android:id="@+id/email"
@@ -70,11 +99,12 @@
         android:textColorHint="@color/white"
         android:textColor="@color/white"
         android:padding="8dp"
+        android:inputType="textEmailAddress"
         android:layout_height="wrap_content"/>
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="16dp"/>
+        android:layout_height="12dp"/>
 
     <EditText
         android:id="@+id/password"
@@ -87,12 +117,13 @@
         android:fontFamily="@font/sora"
         android:textColorHint="@color/white"
         android:padding="8dp"
+        android:inputType="textPassword"
         android:textColor="@color/white"
         android:layout_height="wrap_content"/>
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="16dp"/>
+        android:layout_height="12dp"/>
 
     <EditText
         android:id="@+id/confirmpassword"
@@ -106,15 +137,15 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:padding="8dp"
+        android:inputType="textPassword"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <RadioGroup
             android:id="@+id/userTypeGroup"
@@ -123,7 +154,6 @@
             android:background="@drawable/darkrounded"
             android:padding="8dp"
             android:orientation="horizontal">
-
 
             <RadioButton
                 android:id="@+id/barberButton"
@@ -144,7 +174,6 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"/>
 
-
             <RadioButton
                 android:id="@+id/customerButton"
                 android:layout_width="wrap_content"
@@ -161,12 +190,9 @@
         </RadioGroup>
     </LinearLayout>
 
-
-
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="32dp"/>
-
+        android:layout_height="16dp"/>
 
     <Button
         android:id="@+id/signupbtn"
@@ -177,8 +203,7 @@
         android:textColor="@color/grey"
         android:text="sign up"
         android:textStyle="bold"
-        android:fontFamily="@font/sora"
-        />
+        android:fontFamily="@font/sora" />
 
     <Space
         android:layout_width="wrap_content"
@@ -187,26 +212,21 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        >
+        android:layout_gravity="center">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:fontFamily="@font/sora"
-            android:text="already have an account? "
-            />
+            android:text="already have an account? " />
 
         <TextView
             android:id="@+id/logintext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="login"
-            android:textColor="@color/blue"
-            />
+            android:textColor="@color/blue" />
     </LinearLayout>
-
-
-
 
 </androidx.appcompat.widget.LinearLayoutCompat>
