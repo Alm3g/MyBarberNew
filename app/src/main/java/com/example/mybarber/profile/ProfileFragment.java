@@ -239,11 +239,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void openCamera() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
-        } else {
-            Toast.makeText(getContext(), "Camera not available", Toast.LENGTH_SHORT).show();
-        }
+        startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+
     }
 
     private void openGallery() {

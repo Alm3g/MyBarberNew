@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Barber Info Section -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="24dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/barberImageView"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="16dp"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/white" />
+
+                <TextView
+                    android:id="@+id/barberNameText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Barber Name"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/sora" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!-- Date Selection Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Date"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/sora"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/selectedDateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selected Date: Not selected"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:fontFamily="@font/sora"
+                android:layout_marginBottom="16dp" />
+
+            <CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="24dp"
+                />
+
+            <!-- Time Selection Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Time"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/sora"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/selectedTimeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Selected Time: Not selected"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:fontFamily="@font/sora"
+                android:layout_marginBottom="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/timeSlotRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Notes Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Additional Notes (Optional)"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/sora"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/notesEditText"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="top"
+                android:hint="Any special requests or notes..."
+                android:textColorHint="@color/grey"
+                android:textColor="@color/white"
+                android:fontFamily="@font/sora"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="32dp" />
+
+            <!-- Confirm Booking Button -->
+            <Button
+                android:id="@+id/confirmBookingButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Confirm Booking"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:fontFamily="@font/sora"
+                android:backgroundTint="@color/white"
+                android:layout_marginBottom="16dp"
+                android:enabled="false" />
+
+
+            <Button
+                android:id="@+id/cancelBookingButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Cancel Booking"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:fontFamily="@font/sora"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:visibility="gone" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

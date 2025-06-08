@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -51,10 +52,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 public class SignUp extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
-    EditText displayName, Email, Password, ConfirmPassword;
+    EditText displayName, Email, Password, ConfirmPassword, locationEditText;
     RadioGroup UserTypeGroup;
     RadioButton BarberButton, CustomerButton;
     ImageView profileImageView;
+    LinearLayout locationContainer;
     Boolean IsBarber = null;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Button SignUp;
@@ -64,15 +66,20 @@ public class SignUp extends AppCompatActivity implements CompoundButton.OnChecke
     // Image handling
     private static final int GALLERY_REQUEST_CODE = 1001;
     private static final int CAMERA_REQUEST_CODE = 1002;
-    private static final int PERMISSION_REQUEST_CODE = 1003;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 1003;
+    private static final int STORAGE_PERMISSION_REQUEST_CODE = 1004;
     private String profileImageBase64 = null;
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if (BarberButton.isChecked())
+        if (BarberButton.isChecked()) {
             IsBarber = true;
-        if (CustomerButton.isChecked())
+            showLocationField();
+        }
+        if (CustomerButton.isChecked()) {
             IsBarber = false;
+            hideLocationField();
+        }
     }
 
     @Override
@@ -86,6 +93,8 @@ public class SignUp extends AppCompatActivity implements CompoundButton.OnChecke
         Email = findViewById(R.id.email);
         Password = findViewById(R.id.password);
         ConfirmPassword = findViewById(R.id.confirmpassword);
+        locationEditText = findViewById(R.id.locationEditText);
+        locationContainer = findViewById(R.id.locationContainer);
         UserTypeGroup = findViewById(R.id.userTypeGroup);
         BarberButton = findViewById(R.id.barberButton);
         CustomerButton = findViewById(R.id.customerButton);
@@ -97,6 +106,18 @@ public class SignUp extends AppCompatActivity implements CompoundButton.OnChecke
         SignUp.setOnClickListener(this);
         profileImageView.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
+
+        // Initially hide location field
+        hideLocationField();
+    }
+
+    private void showLocationField() {
+        locationContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLocationField() {
+        locationContainer.setVisibility(View.GONE);
+        locationEditText.setText("");
     }
 
     private void showImagePickerDialog() {
@@ -116,29 +137,63 @@ public class SignUp extends AppCompatActivity implements CompoundButton.OnChecke
     }
 
     private void checkPermissionsAndPickImage() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        // For Android 13+ (API 33+), we need READ_MEDIA_IMAGES instead of READ_EXTERNAL_STORAGE
+        String storagePermission;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            storagePermission = Manifest.permission.READ_MEDIA_IMAGES;
+        } else {
+            storagePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        }
+
+        boolean cameraPermissionGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        boolean storagePermissionGranted = ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED;
+
+        if (!cameraPermissionGranted || !storagePermissionGranted) {
+            // Request missing permissions
+            java.util.List<String> permissionsToRequest = new java.util.ArrayList<>();
+
+            if (!cameraPermissionGranted) {
+                permissionsToRequest.add(Manifest.permission.CAMERA);
+            }
+            if (!storagePermissionGranted) {
+                permissionsToRequest.add(storagePermission);
+            }
 
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE},
-                    PERMISSION_REQUEST_CODE);
+                    permissionsToRequest.toArray(new String[0]),
+                    CAMERA_PERMISSION_REQUEST_CODE);
         } else {
             showImagePickerDialog();
         }
     }
 
     private void openCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
-        } else {
-            Toast.makeText(this, "Camera not available", Toast.LENGTH_SHORT).show();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Camera permission not granted", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+
     }
 
     private void openGallery() {
+        String permission;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            permission = Manifest.permission.READ_MEDIA_IMAGES;
+        } else {
+            permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        }
+
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Storage permission not granted", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+
     }
 
     @Override
@@ -160,7 +215,6 @@ public class SignUp extends AppCompatActivity implements CompoundButton.OnChecke
                 }
 
                 if (bitmap != null) {
-                    // Resize bitmap to reduce size
                     bitmap = resizeBitmap(bitmap, 300, 300);
                     profileImageView.setImageBitmap(bitmap);
                     profileImageBase64 = bitmapToBase64(bitmap);
@@ -176,21 +230,53 @@ public class SignUp extends AppCompatActivity implements CompoundButton.OnChecke
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == PERMISSION_REQUEST_CODE) {
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
             boolean allPermissionsGranted = true;
-            for (int result : grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
+
+            // Check if all requested permissions were granted
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                     allPermissionsGranted = false;
-                    break;
+
+                    // Check if user permanently denied the permission
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
+                        // User permanently denied permission, show dialog to go to settings
+                        showPermissionDeniedDialog(permissions[i]);
+                        return;
+                    } else {
+                        // User denied permission but can be asked again
+                        Toast.makeText(this, "Permission " + permissions[i] + " is required", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 
             if (allPermissionsGranted) {
                 showImagePickerDialog();
             } else {
-                Toast.makeText(this, "Permissions required for image selection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Camera and storage permissions are required for image selection", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void showPermissionDeniedDialog(String permission) {
+        String message;
+        if (permission.equals(Manifest.permission.CAMERA)) {
+            message = "Camera permission is required to take photos. Please enable it in app settings.";
+        } else {
+            message = "Storage permission is required to select images. Please enable it in app settings.";
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle("Permission Required")
+                .setMessage(message)
+                .setPositiveButton("Go to Settings", (dialog, which) -> {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     private Bitmap resizeBitmap(Bitmap bitmap, int maxWidth, int maxHeight) {
@@ -220,6 +306,7 @@ public class SignUp extends AppCompatActivity implements CompoundButton.OnChecke
         Email.setError(null);
         Password.setError(null);
         ConfirmPassword.setError(null);
+        locationEditText.setError(null);
 
         boolean isValid = true;
 
@@ -266,6 +353,22 @@ public class SignUp extends AppCompatActivity implements CompoundButton.OnChecke
         if (IsBarber == null) {
             Toast.makeText(this, "Please select user type (Barber or Customer)", Toast.LENGTH_SHORT).show();
             isValid = false;
+        }
+
+        // Validate location if user is a barber
+        if (IsBarber != null && IsBarber) {
+            String location = locationEditText.getText().toString().trim();
+            if (location.isEmpty()) {
+                locationEditText.setError("Location is required for barbers");
+                Toast.makeText(this, "Please enter your location", Toast.LENGTH_SHORT).show();
+                isValid = false;
+            } else if (location.length() < 3) {
+                locationEditText.setError("Location must be at least 3 characters");
+                isValid = false;
+            } else if (location.length() > 100) {
+                locationEditText.setError("Location must be less than 100 characters");
+                isValid = false;
+            }
         }
 
         return isValid;
@@ -323,6 +426,17 @@ public class SignUp extends AppCompatActivity implements CompoundButton.OnChecke
                                     // Add profile image if selected
                                     if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
                                         userData.put("profileImage", profileImageBase64);
+                                    }
+
+                                    // Add location if user is a barber
+                                    if (IsBarber != null && IsBarber) {
+                                        String location = locationEditText.getText().toString().trim();
+                                        userData.put("location", location);
+
+                                        // Initialize barber-specific fields
+                                        userData.put("rating", 0.0);
+                                        userData.put("ratingCount", 0);
+                                        userData.put("bio", ""); // Empty bio initially
                                     }
 
                                     db.collection("users").document(uid)

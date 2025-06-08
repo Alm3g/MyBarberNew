@@ -1,11 +1,16 @@
 package com.example.mybarber;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mybarber.model.Post;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -26,7 +32,7 @@ public class BarberProfileActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private ImageView imageProfile;
-    private TextView textName, textBio, textPostCount, textRatingCount;
+    private TextView textName, textBio, textPostCount, textRatingCount, textLocation;
     private RatingBar ratingBar;
     private Button buttonBook;
     private RecyclerView recyclerViewPosts;
@@ -52,6 +58,7 @@ public class BarberProfileActivity extends AppCompatActivity {
         imageProfile = findViewById(R.id.imageProfile);
         textName = findViewById(R.id.textName);
         textBio = findViewById(R.id.textBio);
+        textLocation = findViewById(R.id.textLocation);
         textPostCount = findViewById(R.id.textPostCount);
         textRatingCount = findViewById(R.id.textRatingCount);
         ratingBar = findViewById(R.id.ratingBar);
@@ -72,8 +79,26 @@ public class BarberProfileActivity extends AppCompatActivity {
 
         // Set up booking button
         buttonBook.setOnClickListener(v -> {
+            // Check if user is logged in
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            if (auth.getCurrentUser() == null) {
+                Toast.makeText(this, "Please login to book an appointment", Toast.LENGTH_SHORT).show();
+                // Navigate to login activity
+                Intent loginIntent = new Intent(this, Login.class);
+                startActivity(loginIntent);
+                return;
+            }
+
+            // Check if user is trying to book themselves (barber booking themselves)
+            if (auth.getCurrentUser().getUid().equals(barberId)) {
+                Toast.makeText(this, "You cannot book an appointment with yourself", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             // Navigate to booking screen
-            // This would be implemented in a future update
+            Intent bookingIntent = new Intent(this, BookingActivity.class);
+            bookingIntent.putExtra("BARBER_ID", barberId);
+            startActivity(bookingIntent);
         });
     }
 
@@ -88,13 +113,44 @@ public class BarberProfileActivity extends AppCompatActivity {
                             textName.setText(name);
                         }
 
-                        // Set profile image if exists
+                        // Handle profile image - check both URL and base64
                         String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+                        String profileImageBase64 = documentSnapshot.getString("profileImage");
+
                         if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                            // Load from URL using Glide
                             Glide.with(this)
                                     .load(profileImageUrl)
                                     .circleCrop()
                                     .into(imageProfile);
+                        } else if (profileImageBase64 != null && !profileImageBase64.isEmpty()) {
+                            // Load from base64
+                            try {
+                                byte[] decodedString = Base64.decode(profileImageBase64, Base64.DEFAULT);
+                                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                                // Apply circular crop to the bitmap
+                                Glide.with(this)
+                                        .load(decodedByte)
+                                        .circleCrop()
+                                        .into(imageProfile);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                // If base64 decoding fails, use default image
+                                imageProfile.setImageResource(R.drawable.defualtprofile);
+                            }
+                        } else {
+                            // No profile image, use default
+                            imageProfile.setImageResource(R.drawable.defualtprofile);
+                        }
+
+                        // Set location if exists
+                        String location = documentSnapshot.getString("location");
+                        if (location != null && !location.isEmpty()) {
+                            textLocation.setVisibility(View.VISIBLE);
+                            textLocation.setText("📍 " + location);
+                        } else {
+                            textLocation.setVisibility(View.GONE);
                         }
 
                         // Set bio if exists
@@ -118,6 +174,9 @@ public class BarberProfileActivity extends AppCompatActivity {
                             textRatingCount.setText("(" + ratingCount + ")");
                         }
                     }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error loading barber profile", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -137,6 +196,9 @@ public class BarberProfileActivity extends AppCompatActivity {
                     }
                     postAdapter.notifyDataSetChanged();
                     textPostCount.setText(String.valueOf(postList.size()));
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error loading posts", Toast.LENGTH_SHORT).show();
                 });
     }
 }

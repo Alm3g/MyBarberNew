@@ -6,6 +6,9 @@
         android:icon="@drawable/home"
         android:title="home" />
 
+    <item
+        android:id="@+id/showCalender"
+        android:title="show calender" />
 
     <item
         android:id="@+id/profilenav"

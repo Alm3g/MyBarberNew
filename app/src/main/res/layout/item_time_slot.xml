@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="12dp"
+    android:background="@drawable/time_slot_background"
+    android:layout_marginVertical="4dp">
+
+    <!-- Time Display -->
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="10:00 AM"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:paddingStart="8dp" />
+
+    <!-- Available Checkbox -->
+    <CheckBox
+        android:id="@+id/availableCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Available"
+        android:textSize="14sp"
+        android:textColor="@color/dark_gray"
+        android:checked="true"
+        android:layout_marginHorizontal="12dp" />
+
+    <!-- Delete Button -->
+    <ImageButton
+        android:id="@+id/deleteButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_delete"
+        android:background="@drawable/delete_button_background"
+        android:contentDescription="Delete time slot"
+        android:scaleType="centerInside"
+        android:padding="8dp" />
+
+</LinearLayout>

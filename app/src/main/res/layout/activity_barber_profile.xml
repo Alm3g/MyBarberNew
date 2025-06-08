@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".profile.BarberProfileActivity">
+    tools:context=".BarberProfileActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@
                     android:id="@+id/imageProfile"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:src="@drawable/defualtprofile"
                     app:civ_border_width="2dp"
                     app:civ_border_color="@color/white"/>
 
@@ -47,6 +48,18 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/sora"/>
+
+                    <!-- Location -->
+                    <TextView
+                        android:id="@+id/textLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="📍 Location"
+                        android:textColor="@color/lightgrey"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/sora"
+                        android:visibility="gone"/>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"
@@ -82,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="0"
+                        android:text="0 posts"
                         android:textColor="@color/white"
                         android:fontFamily="@font/sora"/>
 
